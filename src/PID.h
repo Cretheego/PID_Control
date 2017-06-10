@@ -23,6 +23,8 @@ protected:
   double dpi_ ;
   double dpd_ ;
   
+  double p[3];
+  double dp[3];
   double best_err = 1e9;
   double tol_ = 0.2;
 
@@ -34,6 +36,7 @@ protected:
   
 public:
   int param;
+  int phase;
   /*
   * Constructor
   */
@@ -68,10 +71,13 @@ public:
   
   void Restart(uWS::WebSocket<uWS::SERVER> ws);
 
-  void init_param_phase() { param = 0;}
+  void init_param_phase() { param = 0;phase = 0; }
+
+  double getErrorChange() { return d_error_; }
 
   void twiddle();
 	
+  double sum();
 };
 
 #endif /* PID_H */

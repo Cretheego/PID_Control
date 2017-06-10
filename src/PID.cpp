@@ -1,6 +1,7 @@
 #include "PID.h"
 #include <math.h>
 #include <iostream>
+#define MIN_NUMBER_STEPS 100
 
 using namespace std;
 
@@ -8,7 +9,7 @@ using namespace std;
 * TODO: Complete the PID class.
 */
 
-PID::PID(int init):param(init),numOfSteps(init) {}
+PID::PID(int init):param(init),phase(init),numOfSteps(init) {}
 
 PID::~PID() {}
 
@@ -18,15 +19,15 @@ void PID::Init(double Kp, double Ki, double Kd) {
 	Kd_ = Kd;
 	
 	p_error_ = 0;
-	i_error_ = 0;
+  i_error_ = 0;
 	d_error_ = 0;
 	total_error_ = 0;
 	
 	numOfSteps_ = 0;
-	dpp_ = 0.1;
-	dpi_ = 0.1;
-	dpd_ = 0.1;
-	best_err = 1e9;
+	dpp_ = Kp/4;
+  dpi_ = Ki/4;
+  dpd_ = .1;
+  best_err = 1e9;
 	initialized_ = true;
 }
 double PID::getValue() {
@@ -41,7 +42,8 @@ void PID::UpdateError(double cte) {
 	d_error_ = cte - p_error_;
 	p_error_ = cte;
   i_error_ += cte;
-	total_error += pow(cte,2) ;
+	if(numOfSteps>MIN_NUMBER_STEPS);
+	total_error += pow(cte,2) ;//+ .0001*pow(getValue(),2);
 	numOfSteps++;
 }
 
@@ -71,16 +73,20 @@ void PID::twiddle() {
 		if(up) Kd_ += dpd_;
 		else Kd_ -= 2*dpd_;
 	}
-	
-	if(err < best_err && numSteps > 1) {
+
+	if(err < best_err && numSteps > 200) {
 		best_err = err;
 		if(param == 0) dpp_ *= 1.1;
 		else if(param == 1) dpi_ *= 1.1;
 		else dpd_ *= 1.1;
 		param = (param+1)%3;
 		up = true;
+		std::cout << "New best Kp: " << Kp_ << " Kd: " << Kd_
+				<< " Ki: " << Ki_ << " Error: " << best_err
+				<< " Sum dpi: " << dpp_ + dpi_ + dpd_ << std::endl;
+
 	} else {
-		std::cout << Kp_ << " Kd: " << Kd_
+		std::cout << "Skipped Kp: " << Kp_ << " Kd: " << Kd_
 								<< " Ki: " << Ki_ << " Error: " << err
 								<< " Sum dpi: " << dpp_ + dpi_ + dpd_ << std::endl;
 		if(up == true) up = false;
@@ -103,4 +109,3 @@ void PID::twiddle() {
 	}
 	
 }
-

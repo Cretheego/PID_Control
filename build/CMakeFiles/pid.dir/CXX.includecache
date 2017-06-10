@@ -6,19 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/mnt/hgfs/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.cpp
+/media/xq/新加卷/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.cpp
 PID.h
-/mnt/hgfs/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.h
+/media/xq/新加卷/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.h
 math.h
 -
 iostream
 -
 
-/mnt/hgfs/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.h
+/media/xq/新加卷/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.h
 uWS/uWS.h
 -
 
-/mnt/hgfs/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/json.hpp
+/media/xq/新加卷/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/json.hpp
 algorithm
 -
 array
@@ -74,15 +74,15 @@ utility
 vector
 -
 
-/mnt/hgfs/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/main.cpp
+/media/xq/新加卷/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/main.cpp
 uWS/uWS.h
 -
 iostream
 -
 json.hpp
-/mnt/hgfs/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/json.hpp
+/media/xq/新加卷/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/json.hpp
 PID.h
-/mnt/hgfs/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.h
+/media/xq/新加卷/Download/CarND/term2/P4/1/CarND-PID-Control-Project-master/src/PID.h
 math.h
 -
 

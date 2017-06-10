@@ -34,9 +34,8 @@ int main()
 
   PID pid(0), pid_throttle(0);
   // TODO: Initialize the pid variable.
-  //First I chose  hyperparameters (P, I, D coefficients) through manual tuning,then make further tuning with twiddle() function.
-  pid.Init(0.1, 0.001, 1.);
-  pid_throttle.Init(.1 , .001 , 0.8);
+  pid.Init(0.08,0.001, 1.);
+  pid_throttle.Init(0.1,0.00001,1);
   bool do_twiddle = true;
   double tol = 0.05;
 
@@ -62,30 +61,36 @@ int main()
           * NOTE: Feel free to play around with the throttle and speed. Maybe use
           * another PID controller to control the speed!
           */
-					pid.UpdateError(cte);
-					steer_value = pid.getValue();
+				pid.UpdateError(cte);
+				steer_value = pid.getValue();
 		
-					double targetSpeed = 30.*(1.-abs(steer_value)) + 20.;
-					pid_throttle.UpdateError(speed - targetSpeed);
-					double throttle_value = pid_throttle.getValue();
+				double targetSpeed = 40.*(1.-tanh(2*steer_value)) + 40;
+        pid_throttle.UpdateError(speed - targetSpeed);
+        double throttle_value = pid_throttle.getValue();
         
-					json msgJson;
-					msgJson["steering_angle"] = steer_value;
-					msgJson["throttle"] = throttle_value;
-					auto msg = "42[\"steer\"," + msgJson.dump() + "]";
-					std::cout << msg << std::endl;
-					ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-					if (do_twiddle) {
-						pid.twiddle();
-						if (abs(cte) > 3.20 || pid.getNumberOfSteps() == 2000) {
-							pid.init_param_phase();
-							pid.setNumberOfSteps(0);
-							// reset the simulator for next round
-							std::string msg = "42[\"reset\",{}]";
-							ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-						}
-					}
+				json msgJson;
+				msgJson["steering_angle"] = steer_value;
+				msgJson["throttle"] = throttle_value;
+				auto msg = "42[\"steer\"," + msgJson.dump() + "]";
+				std::cout << msg << std::endl;
+				ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
+        if (do_twiddle) {
+			  if(1){
+				std::cout<<"cte"<<cte<<std::endl;
 				}
+				pid.twiddle();
+				pid_throttle.twiddle();
+			  if (abs(cte) > 3.20 || pid.getNumberOfSteps() == 2000) {
+			
+					pid.init_param_phase();
+					pid.setNumberOfSteps(0);
+					std::string msg = "42[\"reset\",{}]";
+					ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
+			  }
+
+              // reset the simulator for next round
+			}
+		}
       } else {
         // Manual driving
         std::string msg = "42[\"manual\",{}]";
